@@ -34,7 +34,8 @@ function Add-UpdateSymlink ($AvailablePaths) {
 
     Write-Host "Step 1: Select the REAL folder (The Master Files)"
     for ($i = 0; $i -lt $ValidTargets.Count; $i++) { Write-Host "$($i + 1). $($ValidTargets[$i])" }
-    $tChoice = Read-Host "`nSelect Number"
+    $tChoice = Read-Host "`nSelect Number (or B to go Back)"
+    if ($tChoice -match '^[Bb]$') { return }
 
     # --- Step 2: Filter for non-existent paths OR existing Symlinks ---
     [array]$ValidLinks = $AvailablePaths | Where-Object {
@@ -47,7 +48,8 @@ function Add-UpdateSymlink ($AvailablePaths) {
 
     Write-Host "`nStep 2: Select the location for the LINK (The 'Shortcut')"
     for ($i = 0; $i -lt $ValidLinks.Count; $i++) { Write-Host "$($i + 1). $($ValidLinks[$i])" }
-    $lChoice = Read-Host "`nSelect Number"
+    $lChoice = Read-Host "`nSelect Number (or B to go Back)"
+    if ($lChoice -match '^[Bb]$') { return }
 
     # Initialize for [ref]
     $it = 0; $il = 0
@@ -265,10 +267,13 @@ while ($true) {
             Write-Host "$($i + 1). $($AvailablePaths[$i])"
         }
         
-        $p1 = Read-Host "`nSelect SOURCE folder (Number)"
-        $p2 = Read-Host "Select DESTINATION folder (Number)"
+        $p1 = Read-Host "`nSelect SOURCE folder (Number) or B to go Back"
+        if ($p1 -match '^[Bb]$') { continue }
 
-        $idx1 = 0; $idx2 = 0 
+        $p2 = Read-Host "Select DESTINATION folder (Number) or B to go Back"
+        if ($p2 -match '^[Bb]$') { continue }
+
+        $idx1 = 0; $idx2 = 0
         if ([int]::TryParse($p1, [ref]$idx1) -and [int]::TryParse($p2, [ref]$idx2)) {
             if ($idx1 -le $AvailablePaths.Count -and $idx2 -le $AvailablePaths.Count -and $idx1 -gt 0 -and $idx2 -gt 0) {
                 
