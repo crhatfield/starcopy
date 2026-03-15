@@ -15,10 +15,24 @@
 ## without releasing source under the same license.
 
 ------------------------------
-🚀 Star Citizen - Star Copy - User Guide - What is this?
+🚀 Star Citizen - StarCopy
 
-    Star Citizen is a massive game (120GB+). When Cloud Imperium Games (CIG) releases a new testing version (like PTU or EPTU), you normally have to download the whole game again.
-    starCopy.ps1 is a PowerShell tool that lets you "borrow" the files you already have in your LIVE folder to update your PTU folder. This turns a 2-hour download into a 15-minute copy—or an instant rename.
+PowerShell utility for Star Citizen that eliminates redundant ~120 GB downloads by copying, mirroring, or swapping game branch folders (LIVE/PTU/EPTU). Features dirty copy, clean mirror, instant folder swap, and symlink management via a simple menu-driven interface.
+
+------------------------------
+📖 What is this?
+
+    StarCopy is a PowerShell-based utility for Star Citizen players that eliminates redundant multi-gigabyte downloads when switching between game branches (LIVE, PTU, EPTU, HOTFIX, TECH-PREVIEW).
+
+    When Cloud Imperium Games releases a new test build, the RSI Launcher typically re-downloads the entire game (~120 GB). StarCopy shortcuts this by intelligently reusing files you already have on disk. It reads your game folder paths from a simple config file and presents a menu-driven interface with four operations:
+
+    * Dirty Copy      — Adds or updates files from a source branch to a destination using Robocopy, without deleting anything. Safe for seeding a fresh PTU folder from LIVE. Preserves screenshots and USER settings.
+    * Clean Mirror    — Performs a full Robocopy mirror, making the destination an exact replica of the source. Deletes files in the destination that no longer exist in the source. Useful for clearing a corrupted or out-of-sync branch.
+    * Instant Swap    — Renames two game folders atomically (e.g., PTU <-> LIVE) without moving a single byte. Useful when a PTU patch goes live and you want the launcher to see the correct folder immediately.
+    * Symlink Manager — Creates, updates, or removes Windows symbolic links so multiple branch folders can point to the same physical files on disk, saving significant SSD space.
+
+    A real-time progress bar displays current file transfer percentage and filename during copy operations. Configuration is a plain text file — one folder path per line, with comment support.
+
 ------------------------------
 
 🛠 1. First-Time Setup
