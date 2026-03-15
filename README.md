@@ -68,6 +68,7 @@ Need to change something?
 What's next?
 
     If you are giving this to a friend, make sure you've set $TestMode = $false in the script so they see the clean "User" version with the progress bar instead of the "scary" debug code!
-
-    * Do you want me to add a "Version Number" or your name to the top of the script so they know who made it?
-    * Should I include a "Restore Defaults" button that clears all symlinks?
+    If you want to learn how the script works or customize it, open starCopy.ps1 in a code editor like Visual Studio Code. The code is heavily commented to help you understand each step.
+    If you want to support my work, consider buying me a coffee at https://ko-fi.com/CecilTheNerd or using my referral code when signing up for Star Citizen: https://www.robertsspaceindustries.com/enlist?referral=STAR-KSVL-CVC2
+    Happy gaming, and see you in the 'Verse! 🚀✨
+    
