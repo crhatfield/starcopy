@@ -1,11 +1,8 @@
-'''
-#############################################
+
 ## AUTHOR: CecilTheNerd 
 ## Version: 2026-03-12
 ## BUY ME A COFFEE: https://ko-fi.com/CecilTheNerd
 ## REFERRAL CODE: https://www.robertsspaceindustries.com/enlist?referral=STAR-KSVL-CVC2
-############################################
-'''
 
 ------------------------------
 🚀 Star Citizen - Star Copy - User Guide - What is this?
