@@ -8,6 +8,11 @@
 ## The author is not responsible for any data loss, file corruption, game installation issues,
 ## or any other damages arising from the use or misuse of this script. Use at your own risk.
 ## Always back up your game files before using any third-party tool.
+##
+## LICENSE: GNU General Public License v3.0 only (GPL-3.0-only)
+## Copyright (C) 2026 CecilTheNerd
+## This file is part of StarCopy. See LICENSE file for full terms.
+## You may not distribute modified versions without releasing source under the same license.
 #############################################
 
 $ConfigFile = "starCopyConfig.txt"
