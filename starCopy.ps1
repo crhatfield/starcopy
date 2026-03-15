@@ -1,10 +1,14 @@
 #############################################
-## AUTHOR: CecilTheNerd 
+## AUTHOR: CecilTheNerd
 ## Version: 2026-03-12
-## Buy me a Coffee: https://ko-fi.com/CecilTheNerd
 ## BUY ME A COFFEE: https://ko-fi.com/CecilTheNerd
 ## REFERRAL CODE: https://www.robertsspaceindustries.com/enlist?referral=STAR-KSVL-CVC2
-############################################
+##
+## DISCLAIMER: This script is provided "as-is" without warranty of any kind, express or implied.
+## The author is not responsible for any data loss, file corruption, game installation issues,
+## or any other damages arising from the use or misuse of this script. Use at your own risk.
+## Always back up your game files before using any third-party tool.
+#############################################
 
 $ConfigFile = "starCopyConfig.txt"
 $TestMode = $false  # Toggle this to $false for a cleaner "User" experience
