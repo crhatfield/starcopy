@@ -58,7 +58,7 @@ function Add-UpdateSymlink ($AvailablePaths) {
         if ($it -le $ValidTargets.Count -and $il -le $ValidLinks.Count -and $it -gt 0 -and $il -gt 0) {
 
             $Target = $ValidTargets[$it - 1]
-            $Link   = $ValidLinks[$il - 1]
+            $Link = $ValidLinks[$il - 1]
 
             if (Test-Path $Link) {
                 # Since we filtered, we know this is a ReparsePoint (Symlink)
@@ -69,10 +69,12 @@ function Add-UpdateSymlink ($AvailablePaths) {
             try {
                 New-Item -ItemType SymbolicLink -Path $Link -Target $Target -Force | Out-Null
                 Write-Host "`nSUCCESS: $Link now points to $Target" -ForegroundColor Green; pause
-            } catch {
+            }
+            catch {
                 Write-Host "FAILED: $($_.Exception.Message)" -ForegroundColor Red; pause
             }
-        } else { Write-Host "Invalid Selection."; pause }
+        }
+        else { Write-Host "Invalid Selection."; pause }
     }
 }
 
@@ -110,13 +112,16 @@ function Remove-Symlink ($AvailablePaths) {
             try {
                 (Get-Item $LinkToRemove).Delete()
                 Write-Host "`nSUCCESS: Symlink removed." -ForegroundColor Green; pause
-            } catch {
+            }
+            catch {
                 Write-Host "FAILED: $($_.Exception.Message)" -ForegroundColor Red; pause
             }
-        } else {
+        }
+        else {
             Write-Host "Cancelled." -ForegroundColor Gray; pause
         }
-    } else {
+    }
+    else {
         Write-Host "Invalid Selection." -ForegroundColor Red; pause
     }
 }
@@ -139,62 +144,104 @@ function Manage-Symlink ($AvailablePaths) {
     }
 }
 
-function Sync-Versions ($Src, $Dst, $Mir = $false) {
+function Sync-DirtyCopy ($Src, $Dst) {
     if (-not $TestMode) { Clear-Host }
-    
+
     if (-not (Test-Path $Src)) { Write-Host "[!] Source not found: $Src" -ForegroundColor Red; pause; return }
     if (-not (Test-Path $Dst)) { New-Item -ItemType Directory -Path $Dst -Force | Out-Null }
 
-    $ModeText = if ($Mir) { "CLEAN MIRROR" } else { "DIRTY COPY" }
-    
-    Write-Host "MODE:    $ModeText" -ForegroundColor Yellow
+    Write-Host "MODE:    DIRTY COPY" -ForegroundColor Yellow
     Write-Host "FROM:    $Src" -ForegroundColor Cyan
     Write-Host "TO:      $Dst" -ForegroundColor Cyan
-    
-    $confirm = Read-Host "`nProceed? (Y/N)"
-    if ($confirm -notmatch 'y') { return }
 
-    $SyncFlag = if ($Mir) { "/MIR" } else { "/E" }
+    $confirm = Read-Host "`nProceed? (Y/N)"
+    if ($confirm -notmatch '^[Yy]') { return }
 
     if ($TestMode) {
-        robocopy "$Src" "$Dst" $SyncFlag /MT:8 /XO /V /R:3 /W:5
-    } else {
-        Clear-Host
-        # Standard loop for the 6-line gap
-        for ($i = 0; $i -lt 6; $i++) { Write-Host "" }
-        
-        Write-Host "--- Syncing Star Citizen ---" -ForegroundColor Yellow
-        Write-Host "MODE: $ModeText"
-        Write-Host "FROM: $Src"
-        Write-Host "TO:   $Dst" -ForegroundColor Cyan
-        Write-Host "-------------------------------------------"
-        
-        $currentFile = "Scanning files..."
-        
-        # Robocopy flags: /NJH (No Job Header), /NJS (No Job Summary), /NDL (No Directory List)
-        robocopy "$Src" "$Dst" $SyncFlag /MT:8 /XO /NJH /NJS /NDL /NC /NS /R:3 /W:5 | ForEach-Object {
-            $line = $_.Trim()
-            
-            if ($line -match '(\d+(\.\d+)?)%') {
-                $percent = [float]$matches[1]
-                # Update the blue bar with the percent AND the filename
-                Write-Progress -Activity "Syncing Files" -Status "[$percent%] Working on: $currentFile" -PercentComplete $percent
-            } 
-            elseif ($line -ne "" -and $line -notmatch '^\s+\d+\s+') {
-                # This captures the new filename
-                $currentFile = Split-Path $line -Leaf
-                
-                # Update the bar immediately for the new file at 0%
-                Write-Progress -Activity "Syncing Files" -Status "[0%] Working on: $currentFile" -PercentComplete 0
-                
-                # OPTIONAL: This prints the filename to the console below your TO: line
-                Write-Host "Current: $currentFile                     " -NoNewline
-                Write-Host "`r" -NoNewline # Returns cursor to start of line to overwrite for next file
-            }
-        }
-        Write-Progress -Activity "Syncing Files" -Completed
+        robocopy "$Src" "$Dst" /E /MT:32 /J /XO /V /R:1 /W:1
+        Write-Host "`n`nOperation Complete!" -ForegroundColor Green; pause
+        return
     }
-    
+
+    Clear-Host
+    for ($i = 0; $i -lt 6; $i++) { Write-Host "" }
+
+    Write-Host "--- Syncing Star Citizen ---" -ForegroundColor Yellow
+    Write-Host "MODE: DIRTY COPY"
+    Write-Host "FROM: $Src"
+    Write-Host "TO:   $Dst" -ForegroundColor Cyan
+    Write-Host "-------------------------------------------"
+
+    $currentFile = "Scanning files..."
+
+    # Robocopy flags: /NJH (No Job Header), /NJS (No Job Summary), /NDL (No Directory List)
+    robocopy "$Src" "$Dst" /E /MT:32 /J /XO /NJH /NJS /NDL /NC /NS /R:1 /W:1 | ForEach-Object {
+        $line = $_.Trim()
+        if ($line -match '(\d+(\.\d+)?)%') {
+            $percent = [float]$matches[1]
+            Write-Progress -Activity "Syncing Files" -Status "[$percent%] Working on: $currentFile" -PercentComplete $percent
+        }
+        elseif ($line -ne "" -and $line -notmatch '^\s+\d+\s+') {
+            $currentFile = Split-Path $line -Leaf
+            Write-Progress -Activity "Syncing Files" -Status "[0%] Working on: $currentFile" -PercentComplete 0
+            Write-Host "Current: $currentFile                     " -NoNewline
+            Write-Host "`r" -NoNewline
+        }
+    }
+
+    Write-Progress -Activity "Syncing Files" -Completed
+    Write-Host "`n`nOperation Complete!" -ForegroundColor Green; pause
+}
+
+function Sync-CleanMirror ($Src, $Dst) {
+    if (-not $TestMode) { Clear-Host }
+
+    if (-not (Test-Path $Src)) { Write-Host "[!] Source not found: $Src" -ForegroundColor Red; pause; return }
+    if (-not (Test-Path $Dst)) { New-Item -ItemType Directory -Path $Dst -Force | Out-Null }
+
+    Write-Host "MODE:    CLEAN MIRROR" -ForegroundColor Yellow
+    Write-Host "FROM:    $Src" -ForegroundColor Cyan
+    Write-Host "TO:      $Dst" -ForegroundColor Cyan
+
+    $confirm = Read-Host "`nProceed? (Y/N)"
+    if ($confirm -notmatch '^[Yy]') { return }
+
+    if ($TestMode) {
+        # /MT:32 — high thread count (SSD/NVMe required for Star Citizen anyway)
+        # /J     — unbuffered I/O, faster for large pak files on SSD/NVMe
+        # /MIR   — mirror: source wins, deletes extras in destination
+        robocopy "$Src" "$Dst" /MIR /MT:32 /J /V /R:1 /W:1
+        Write-Host "`n`nOperation Complete!" -ForegroundColor Green; pause
+        return
+    }
+
+    Clear-Host
+    for ($i = 0; $i -lt 6; $i++) { Write-Host "" }
+
+    Write-Host "--- Syncing Star Citizen ---" -ForegroundColor Yellow
+    Write-Host "MODE: CLEAN MIRROR"
+    Write-Host "FROM: $Src"
+    Write-Host "TO:   $Dst" -ForegroundColor Cyan
+    Write-Host "-------------------------------------------"
+
+    $currentFile = "Scanning files..."
+
+    # Robocopy flags: /NJH (No Job Header), /NJS (No Job Summary), /NDL (No Directory List)
+    robocopy "$Src" "$Dst" /MIR /MT:32 /J /NJH /NJS /NDL /NC /NS /R:1 /W:1 | ForEach-Object {
+        $line = $_.Trim()
+        if ($line -match '(\d+(\.\d+)?)%') {
+            $percent = [float]$matches[1]
+            Write-Progress -Activity "Syncing Files" -Status "[$percent%] Working on: $currentFile" -PercentComplete $percent
+        }
+        elseif ($line -ne "" -and $line -notmatch '^\s+\d+\s+') {
+            $currentFile = Split-Path $line -Leaf
+            Write-Progress -Activity "Syncing Files" -Status "[0%] Working on: $currentFile" -PercentComplete 0
+            Write-Host "Current: $currentFile                     " -NoNewline
+            Write-Host "`r" -NoNewline
+        }
+    }
+
+    Write-Progress -Activity "Syncing Files" -Completed
     Write-Host "`n`nOperation Complete!" -ForegroundColor Green; pause
 }
 
@@ -222,7 +269,8 @@ function Swap-Names ($PathA, $PathB) {
             Rename-Item -Path (Join-Path $ParentDir $TempName) -NewName $NameB -ErrorAction Stop
             
             Write-Host "Success! Folders swapped." -ForegroundColor Green; pause
-        } catch {
+        }
+        catch {
             Write-Host "FAILED: $($_.Exception.Message)" -ForegroundColor Red
             pause
         }
@@ -233,10 +281,11 @@ function Swap-Names ($PathA, $PathB) {
 while ($true) {
     if (Test-Path $ConfigFile) {
         [array]$AvailablePaths = Get-Content $ConfigFile |
-            Where-Object { $_.Trim() -notlike "#*" } |
-            ForEach-Object { $_.Split('#')[0].Trim() } |
-            Where-Object { $_ -ne "" }
-    } else {
+        Where-Object { $_.Trim() -notlike "#*" } |
+        ForEach-Object { $_.Split('#')[0].Trim() } |
+        Where-Object { $_ -ne "" }
+    }
+    else {
         Write-Host "Error: $ConfigFile not found!" -ForegroundColor Red; pause; exit
     }
 
@@ -285,12 +334,14 @@ while ($true) {
                 }
 
                 switch ($choice) {
-                    "1" { Sync-Versions -Src $folderA -Dst $folderB -Mir $false }
-                    "2" { Sync-Versions -Src $folderA -Dst $folderB -Mir $true }
+                    "1" { Sync-DirtyCopy   -Src $folderA -Dst $folderB }
+                    "2" { Sync-CleanMirror -Src $folderA -Dst $folderB }
                     "3" { Swap-Names -PathA $folderA -PathB $folderB }
                 }
-            } else { Write-Host "Selection out of range!"; pause }
-        } else { Write-Host "Invalid number!"; pause }
+            }
+            else { Write-Host "Selection out of range!"; pause }
+        }
+        else { Write-Host "Invalid number!"; pause }
     }
 }
 
