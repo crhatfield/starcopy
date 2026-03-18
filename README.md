@@ -1,23 +1,23 @@
 
-## AUTHOR: CecilTheNerd
-## Version: 2026-03-12
-## BUY ME A COFFEE: https://ko-fi.com/CecilTheNerd
-## REFERRAL CODE: https://www.robertsspaceindustries.com/enlist?referral=STAR-KSVL-CVC2
-
-## DISCLAIMER: This tool is provided "as-is" without warranty of any kind, express or implied.
-## The author is not responsible for any data loss, file corruption, game installation issues,
-## or any other damages arising from the use or misuse of this tool. Use at your own risk.
-## Always back up your game files before using any third-party tool.
-##
-## LICENSE: GNU General Public License v3.0 only (GPL-3.0-only)
-## Copyright (C) 2026 CecilTheNerd
-## See the LICENSE file for full terms. You may not distribute modified versions
-## without releasing source under the same license.
+# AUTHOR: CecilTheNerd
+# Version: 2026-03-12
+# BUY ME A COFFEE: https://ko-fi.com/CecilTheNerd
+# REFERRAL CODE: https://www.robertsspaceindustries.com/enlist?referral=STAR-KSVL-CVC2
+# 
+# DISCLAIMER: This tool is provided "as-is" without warranty of any kind, express or implied.
+# The author is not responsible for any data loss, file corruption, game installation issues,
+# or any other damages arising from the use or misuse of this tool. Use at your own risk.
+# Always back up your game files before using any third-party tool.
+#
+# LICENSE: GNU General Public License v3.0 only (GPL-3.0-only)
+# Copyright (C) 2026 CecilTheNerd
+# See the LICENSE file for full terms. You may not distribute modified versions
+# without releasing source under the same license.
 
 ------------------------------
 🚀 Star Citizen - StarCopy
 
-PowerShell utility for Star Citizen that eliminates redundant ~120 GB downloads by copying, mirroring, or swapping game branch folders (LIVE/PTU/EPTU). Features dirty copy, clean mirror, instant folder swap, and symlink management via a simple menu-driven interface.
+Great for day 1 PTU access or when PTU goes to LIVE, starCopy is a PowerShell utility for Star Citizen that eliminates redundant ~120 GB downloads by copying, mirroring, or swapping game branch folders (LIVE/PTU/EPTU). Features dirty copy (no deletes, only overwrites), clean mirror (removes files not present in source), instant folder swap (Super quick swap for when PTU goes to LIVE), and symlink management (Space saving but requires you to verify files when switching versions) via a simple menu-driven interface.
 
 ------------------------------
 📖 What is this?
