@@ -10,11 +10,10 @@
 ## - Anything after a # is a comment. o7
 #########################################################
 
-## DEFAULT PATHS ##
+## DEFAULT PATHS - ONLY LIVE NEEDS TO EXIST - OTHERS CAN BE CREATED OR SYNCRONIZED ##
 C:\Program Files\Roberts Space Industries\StarCitizen\LIVE
 C:\Program Files\Roberts Space Industries\StarCitizen\HOTFIX
 C:\Program Files\Roberts Space Industries\StarCitizen\PTU
 C:\Program Files\Roberts Space Industries\StarCitizen\EPTU
 C:\Program Files\Roberts Space Industries\StarCitizen\TECH-PREVIEW
-
 ##

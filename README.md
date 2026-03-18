@@ -40,7 +40,8 @@ Great for day 1 PTU access or when PTU goes to LIVE, starCopy is a PowerShell ut
     1. The Paths File: Open the file named starCopyConfig.txt in Notepad.
     2. Add Your Folders: Paste the full location of your Star Citizen folders. It should look like this:
 
-    # add your full paths to LIVE and other folders here
+    # add your full paths to LIVE and other folders here..
+    # even folders that don't exist yet! The script will create them if needed
     C:\Program Files\Roberts Space Industries\StarCitizen\LIVE
     C:\Program Files\Roberts Space Industries\StarCitizen\HOTFIX
     C:\Program Files\Roberts Space Industries\StarCitizen\PTU
