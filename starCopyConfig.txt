@@ -7,7 +7,6 @@
 ## - Add as many FULL paths as you want here.
 ## - Must be a minimum of 2
 ## - They need to be on their own lines.
-## - Best practice is to make sure they already exist.
 ## - Anything after a # is a comment. o7
 #########################################################
 
